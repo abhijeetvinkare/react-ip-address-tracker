@@ -1,10 +1,9 @@
 import React from "react";
 import "./Home.css";
-import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import LocationMarker from "./LocationMarker";
 
 function Home() {
-  const position = [51.505, -0.09];
   return (
     <div className="main-container">
       <div>

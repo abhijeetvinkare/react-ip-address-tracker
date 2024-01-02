@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMapEvents } from "react-leaflet";
-import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
+import { Marker, Popup } from "react-leaflet";
 
 function LocationMarker() {
   const [position, setPosition] = useState(null);
