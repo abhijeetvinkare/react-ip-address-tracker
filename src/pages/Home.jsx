@@ -8,6 +8,7 @@ function Home() {
     <div className="main-container">
       <div>
         <h1>IP Address Tracker</h1>
+        <input type="text" placeholder="enter ip address"/>
       </div>
       <div>
         <MapContainer
