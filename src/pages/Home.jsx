@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import LocationMarker from "./LocationMarker";
 import { IoIosArrowForward } from "react-icons/io";
+import axios from 'axios';
 
 function Home() {
+
+  const [ipInfo, setIpInfo] = useState(null);
+  const ipAddress = '24.48.0.1';
+
+  useEffect(() => {
+    const apiUrl = `http://ip-api.com/json/${ipAddress}`;
+
+    axios.get(apiUrl)
+      .then(response => {
+        // Handle the response data here
+        setIpInfo(response.data);
+      })
+      .catch(error => {
+        // Handle errors here
+        console.error('Error fetching IP information:', error.message);
+      });
+  }, [ipAddress]);
+
+  console.log(ipInfo)
+  
   return (
     <div className="main-container">
       <div className="search-container">
