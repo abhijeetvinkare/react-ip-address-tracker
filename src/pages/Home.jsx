@@ -13,7 +13,7 @@ function Home() {
           <input
             className="search-input-box"
             type="text"
-            placeholder="Enter ip address"
+            placeholder="Enter ip address . . ."
             required
           />
           <button>
@@ -23,20 +23,20 @@ function Home() {
       </div>
       <div className="result-container">
         <div className="result-container-child">
-          <span>IP ADDRESS</span>
-          <span>192.218.174.101</span>
+          <span className="title-span">IP ADDRESS</span>
+          <span className="info-span">192.218.174.101</span>
         </div>
         <div className="result-container-child">
-          <span>IP ADDRESS</span>
-          <span>Brooklyn, NY 10001</span>
+          <span className="title-span">LOCATION</span>
+          <span className="info-span">Brooklyn, NY 10001</span>
         </div>
         <div className="result-container-child">
-          <span>IP ADDRESS</span>
-          <span>UTC - 05:00</span>
+          <span className="title-span">TIMEZONE</span>
+          <span className="info-span">UTC - 05:00</span>
         </div>
         <div className="result-container-child">
-          <span>IP ADDRESS</span>
-          <span>SpaceX</span>
+          <span className="title-span">ISP</span>
+          <span className="info-span">SpaceX</span>
         </div>
       </div>
       <div className="map-container">

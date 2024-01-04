@@ -25,9 +25,13 @@
 
 .search-input-box{
     height: 42px;
-    padding: 15px;
+    padding: 25px;
     border-radius: 8px 0px 0px 8px;
     border: none;
+    width: 400px;
+    margin-top: 7px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
 }
 
 form{
@@ -38,12 +42,12 @@ form{
 
 h1{
     color: white;
-    margin-top: -50px;
+    margin-top: -60px;
 }
 
 button{
-    height: 42px;
-    width: 40px;
+    height: 52px;
+    width: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,18 +58,20 @@ button{
     background: #3F3F3F;
     color: white;
     cursor: pointer;
+    margin-top: 7px;
 }
 
 .result-container{
-    height: 100px;
     background: #FFFFFF;
     z-index: 1;
-    margin-top: -50px;
-    margin-bottom: -50px;
+    margin-top: -60px;
+    margin-bottom: -70px;
     display: flex;
     justify-content: center;
     align-items: center;
-    column-gap: 40px;
+    column-gap: 90px;
+    padding: 40px;
+    border-radius: 10px;
 }
 .result-container h1{
     color: black;
@@ -74,8 +80,19 @@ button{
 .result-container-child{
     display: flex;
     flex-direction: column;
+    row-gap: 10px;
 }
 
+.title-span{
+    color: #8E8E8E;
+    font-weight: 600;
+    font-size: 14px;
+}
+.info-span{
+    color: black;
+    font-size: 20px;
+    font-weight: 700;
+}
 .map-container{
     flex: 6;
     width: 100vw;
