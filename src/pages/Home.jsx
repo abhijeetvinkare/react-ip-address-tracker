@@ -2,15 +2,44 @@ import React from "react";
 import "./Home.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import LocationMarker from "./LocationMarker";
+import { IoIosArrowForward } from "react-icons/io";
 
 function Home() {
   return (
     <div className="main-container">
-      <div>
+      <div className="search-container">
         <h1>IP Address Tracker</h1>
-        <input type="text" placeholder="enter ip address"/>
+        <form action="">
+          <input
+            className="search-input-box"
+            type="text"
+            placeholder="Enter ip address"
+            required
+          />
+          <button>
+            <IoIosArrowForward size={25} />
+          </button>
+        </form>
       </div>
-      <div>
+      <div className="result-container">
+        <div className="result-container-child">
+          <span>IP ADDRESS</span>
+          <span>192.218.174.101</span>
+        </div>
+        <div className="result-container-child">
+          <span>IP ADDRESS</span>
+          <span>Brooklyn, NY 10001</span>
+        </div>
+        <div className="result-container-child">
+          <span>IP ADDRESS</span>
+          <span>UTC - 05:00</span>
+        </div>
+        <div className="result-container-child">
+          <span>IP ADDRESS</span>
+          <span>SpaceX</span>
+        </div>
+      </div>
+      <div className="map-container">
         <MapContainer
           center={{ lat: 51.505, lng: -0.09 }}
           zoom={13}
