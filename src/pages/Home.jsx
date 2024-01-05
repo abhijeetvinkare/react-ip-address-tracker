@@ -27,41 +27,38 @@ function Home() {
 
   console.log(ipAddress);
 
-  useEffect(() => {
-    if (ipAddress) {
-      const apiUrl = `http://ip-api.com/json/${ipAddress}`;
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get(`http://ip-api.com/json/${ipAddress}`);
+      setIpInfo(response.data);
 
-      axios
-        .get(apiUrl)
-        .then((response) => {
-          // Handle the response data here
-          setIpInfo(response.data);
-          setPosition({
-            lat: response.data.lat,
-            lon: response.data.lon,
-          });
-        })
-        .catch((error) => {
-          // Handle errors here
-          console.error("Error fetching IP information:", error.message);
-        });
+      // Assuming response.data has lat and lon properties
+      setPosition({
+        lat: response.data.lat,
+        lon: response.data.lon,
+      });
+    } catch (error) {
+      console.error("Error fetching IP information:", error.message);
     }
-  }, [ipAddress]);
+  };
 
-  console.log(ipInfo);
+  const dummyPosition = [51.505, -0.09];
 
   return (
     <div className="main-container">
       <div className="search-container">
         <h1>IP Address Tracker</h1>
-        <form action="">
+        <form onSubmit={handleSearch}>
           <input
             className="search-input-box"
             type="text"
             placeholder="Enter ip address . . ."
             required
+            value={ipAddress}
+            onChange={(e) => setIpAddress(e.target.value)}
           />
-          <button>
+          <button type="submit">
             <IoIosArrowForward size={25} />
           </button>
         </form>
@@ -105,6 +102,41 @@ function Home() {
           </div>
         </>
       )}
+
+
+{!ipInfo && ( <>
+      <div className="result-container">
+        <div className="result-container-child">
+          <span className="title-span">IP ADDRESS</span>
+          <span className="info-span">127.101.131.11</span>
+        </div>
+        <div className="result-container-child">
+          <span className="title-span">LOCATION</span>
+          <span className="info-span">New York, USA</span>
+        </div>
+        <div className="result-container-child">
+          <span className="title-span">TIMEZONE</span>
+          <span className="info-span">UTC - 5:00</span>
+        </div>
+        <div className="result-container-child">
+          <span className="title-span">ISP</span>
+          <span className="info-span">SpaceX</span>
+        </div>
+      </div>
+      <div className="map-container">
+        <MapContainer center={dummyPosition} zoom={13} scrollWheelZoom={false}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={dummyPosition}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </div>
+      </>)}
     </div>
   );
 }
