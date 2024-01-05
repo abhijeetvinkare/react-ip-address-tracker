@@ -1,31 +1,55 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import { MapContainer, TileLayer } from "react-leaflet";
-import LocationMarker from "./LocationMarker";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { IoIosArrowForward } from "react-icons/io";
-import axios from 'axios';
+import axios from "axios";
 
 function Home() {
-
   const [ipInfo, setIpInfo] = useState(null);
-  const ipAddress = '24.48.0.1';
+  const [ipAddress, setIpAddress] = useState("");
+  const [position, setPosition] = useState({
+    lat: 51.505,
+    lon: -0.09,
+  });
 
   useEffect(() => {
-    const apiUrl = `http://ip-api.com/json/${ipAddress}`;
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://api.ipify.org/?format=json");
+        setIpAddress(response.data.ip);
+      } catch (error) {
+        console.error("Error fetching IP data:", error);
+      }
+    };
 
-    axios.get(apiUrl)
-      .then(response => {
-        // Handle the response data here
-        setIpInfo(response.data);
-      })
-      .catch(error => {
-        // Handle errors here
-        console.error('Error fetching IP information:', error.message);
-      });
+    fetchData();
+  }, []);
+
+  console.log(ipAddress);
+
+  useEffect(() => {
+    if (ipAddress) {
+      const apiUrl = `http://ip-api.com/json/${ipAddress}`;
+
+      axios
+        .get(apiUrl)
+        .then((response) => {
+          // Handle the response data here
+          setIpInfo(response.data);
+          setPosition({
+            lat: response.data.lat,
+            lon: response.data.lon,
+          });
+        })
+        .catch((error) => {
+          // Handle errors here
+          console.error("Error fetching IP information:", error.message);
+        });
+    }
   }, [ipAddress]);
 
-  console.log(ipInfo)
-  
+  console.log(ipInfo);
+
   return (
     <div className="main-container">
       <div className="search-container">
@@ -42,38 +66,45 @@ function Home() {
           </button>
         </form>
       </div>
-      <div className="result-container">
-        <div className="result-container-child">
-          <span className="title-span">IP ADDRESS</span>
-          <span className="info-span">192.218.174.101</span>
-        </div>
-        <div className="result-container-child">
-          <span className="title-span">LOCATION</span>
-          <span className="info-span">Brooklyn, NY 10001</span>
-        </div>
-        <div className="result-container-child">
-          <span className="title-span">TIMEZONE</span>
-          <span className="info-span">UTC - 05:00</span>
-        </div>
-        <div className="result-container-child">
-          <span className="title-span">ISP</span>
-          <span className="info-span">SpaceX</span>
-        </div>
-      </div>
-      <div className="map-container">
-        <MapContainer
-          center={{ lat: 51.505, lng: -0.09 }}
-          zoom={13}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <LocationMarker />
-        </MapContainer>
-        ,
-      </div>
+      {ipInfo && (
+        <>
+          <div className="result-container">
+            <div className="result-container-child">
+              <span className="title-span">IP ADDRESS</span>
+              <span className="info-span">{ipInfo.query}</span>
+            </div>
+            <div className="result-container-child">
+              <span className="title-span">LOCATION</span>
+              <span className="info-span">
+                {" "}
+                {ipInfo.city}, {ipInfo.regionName}, {ipInfo.country}
+              </span>
+            </div>
+            <div className="result-container-child">
+              <span className="title-span">TIMEZONE</span>
+              <span className="info-span">{ipInfo.timezone}</span>
+            </div>
+            <div className="result-container-child">
+              <span className="title-span">ISP</span>
+              <span className="info-span">{ipInfo.isp}</span>
+            </div>
+          </div>
+          <div className="map-container">
+            <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={position}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            </MapContainer>
+            ,
+          </div>
+        </>
+      )}
     </div>
   );
 }
