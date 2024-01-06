@@ -31,6 +31,7 @@ function Home() {
   console.log(ipAddress);
 
   const handleSearch = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const response = await axios.get(`http://ip-api.com/json/${ipAddress}`);
@@ -44,6 +45,7 @@ function Home() {
     } catch (error) {
       console.error("Error fetching IP information:", error.message);
     }
+    setLoading(false)
   };
 
   const dummyPosition = [51.505, -0.09];
@@ -68,7 +70,7 @@ function Home() {
       </div>
       {ipInfo && (
         <>
-          <div className="result-container">
+          <div className="result-container" style={{ marginBottom: "-92px" }}>
             <div className="result-container-child">
               <span className="title-span">IP ADDRESS</span>
               <span className="info-span">{ipInfo.query}</span>
