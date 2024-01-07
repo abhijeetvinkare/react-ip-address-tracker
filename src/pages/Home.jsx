@@ -49,6 +49,7 @@ function Home() {
   };
 
   const dummyPosition = [51.505, -0.09];
+  console.log(position)
 
   return (
     <div className="main-container">
