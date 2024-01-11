@@ -9,10 +9,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 function Home() {
   const [ipInfo, setIpInfo] = useState(null);
   const [ipAddress, setIpAddress] = useState("");
-  const [position, setPosition] = useState({
-    lat: 51.505,
-    lon: -0.09,
-  });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -36,20 +32,11 @@ function Home() {
     try {
       const response = await axios.get(`http://ip-api.com/json/${ipAddress}`);
       setIpInfo(response.data);
-
-      // Assuming response.data has lat and lon properties
-      setPosition({
-        lat: response.data.lat,
-        lon: response.data.lon,
-      });
     } catch (error) {
       console.error("Error fetching IP information:", error.message);
     }
     setLoading(false)
   };
-
-  const dummyPosition = [51.505, -0.09];
-  console.log(position)
 
   return (
     <div className="main-container">
@@ -93,12 +80,12 @@ function Home() {
             </div>
           </div>
           <div className="map-container">
-            <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+            <MapContainer center={[ipInfo.lat, ipInfo.lon]} zoom={13} scrollWheelZoom={false}>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={position}>
+              <Marker position={[ipInfo.lat, ipInfo.lon]}>
                 <Popup>
                   A pretty CSS3 popup. <br /> Easily customizable.
                 </Popup>
@@ -130,7 +117,7 @@ function Home() {
           </div>
           <div className="map-container">
             <MapContainer
-              center={dummyPosition}
+              center={[51.505, -0.09]}
               zoom={13}
               scrollWheelZoom={false}
             >
@@ -138,7 +125,7 @@ function Home() {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={dummyPosition}>
+              <Marker position={[51.505, -0.09]}>
                 <Popup>
                   A pretty CSS3 popup. <br /> Easily customizable.
                 </Popup>
