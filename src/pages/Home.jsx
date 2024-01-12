@@ -24,6 +24,8 @@ function Home() {
     fetchData();
   }, []);
 
+  
+
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -77,7 +79,7 @@ function Home() {
           </button>
         </form>
       </div>
-      {ipInfo && (
+      {ipInfo &&  (
         <>
           <div className="result-container" style={{ marginBottom: "-92px" }}>
             <div className="result-container-child">
