@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { IoIosArrowForward } from "react-icons/io";
@@ -7,7 +7,6 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function Home() {
-  
   const [ipInfo, setIpInfo] = useState(null);
   const [ipAddress, setIpAddress] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,8 +24,7 @@ function Home() {
     fetchData();
   }, []);
 
-  console.log(ipAddress);
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
 
     // Basic IP address validation
@@ -39,16 +37,27 @@ function Home() {
 
     setLoading(true);
 
-    try {
-      const response = await axios.get(`http://ip-api.com/json/${ipAddress}`);
-      setIpInfo(response.data);
-    } catch (error) {
-      console.error("Error fetching IP information:", error.message);
-    }
-
-    setLoading(false);
+    axios
+      .get(`http://ip-api.com/json/${ipAddress}`)
+      .then((response) => {
+        if (
+          response.data.status === "fail" &&
+          response.data.message === "reserved range"
+        ) {
+          alert(
+            "The provided IP address is in a reserved range and cannot be used for regular internet routing."
+          );
+        } else {
+          setIpInfo(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching IP information:", error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
-
 
   return (
     <div className="main-container">
