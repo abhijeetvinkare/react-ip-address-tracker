@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Home.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { IoIosArrowForward } from "react-icons/io";
@@ -7,6 +7,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function Home() {
+  
   const [ipInfo, setIpInfo] = useState(null);
   const [ipAddress, setIpAddress] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,18 +26,29 @@ function Home() {
   }, []);
 
   console.log(ipAddress);
-
   const handleSearch = async (e) => {
-    setLoading(true);
     e.preventDefault();
+
+    // Basic IP address validation
+    const isIPValid = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ipAddress);
+
+    if (!isIPValid) {
+      alert("Invalid IPv4 address");
+      return;
+    }
+
+    setLoading(true);
+
     try {
       const response = await axios.get(`http://ip-api.com/json/${ipAddress}`);
       setIpInfo(response.data);
     } catch (error) {
       console.error("Error fetching IP information:", error.message);
     }
-    setLoading(false)
+
+    setLoading(false);
   };
+
 
   return (
     <div className="main-container">
@@ -80,7 +92,11 @@ function Home() {
             </div>
           </div>
           <div className="map-container">
-            <MapContainer center={[ipInfo.lat, ipInfo.lon]} zoom={13} scrollWheelZoom={false}>
+            <MapContainer
+              center={[ipInfo.lat, ipInfo.lon]}
+              zoom={13}
+              scrollWheelZoom={true}
+            >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -119,7 +135,7 @@ function Home() {
             <MapContainer
               center={[51.505, -0.09]}
               zoom={13}
-              scrollWheelZoom={false}
+              scrollWheelZoom={true}
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
