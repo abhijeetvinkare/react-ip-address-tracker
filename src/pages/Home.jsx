@@ -5,6 +5,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Swal from 'sweetalert2'
 
 function Home() {
   const [ipInfo, setIpInfo] = useState(null);
@@ -33,7 +34,11 @@ function Home() {
     const isIPValid = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ipAddress);
 
     if (!isIPValid) {
-      alert("Invalid IPv4 address");
+      Swal.fire({
+        title: 'Invalid IP Address!',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
       return;
     }
 
@@ -46,9 +51,12 @@ function Home() {
           response.data.status === "fail" &&
           response.data.message === "reserved range"
         ) {
-          alert(
-            "The provided IP address is in a reserved range and cannot be used for regular internet routing."
-          );
+          Swal.fire({
+            title: 'Error!',
+            text: 'IP Not Listed! Reserved Range! Try Another IP... ',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
         } else {
           setIpInfo(response.data);
         }
