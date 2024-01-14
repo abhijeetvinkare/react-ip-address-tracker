@@ -32,7 +32,7 @@ function Home() {
 
     if (!isIPValid) {
       Swal.fire({
-        title: "Invalid IP Address!",
+        title: "Invalid IPv4 Address!",
         icon: "error",
         confirmButtonText: "OK",
       });
