@@ -3,9 +3,8 @@ import "./Home.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import LoadingSpinner from "./LoadingSpinner";
 
 function Home() {
   const [ipInfo, setIpInfo] = useState(null);
@@ -25,8 +24,6 @@ function Home() {
     fetchData();
   }, []);
 
-  
-
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -35,10 +32,10 @@ function Home() {
 
     if (!isIPValid) {
       Swal.fire({
-        title: 'Invalid IP Address!',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      })
+        title: "Invalid IP Address!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
@@ -52,11 +49,11 @@ function Home() {
           response.data.message === "reserved range"
         ) {
           Swal.fire({
-            title: 'Error!',
-            text: 'IP Not Listed! Reserved Range! Try Another IP... ',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          })
+            title: "Error!",
+            text: "IP Not Listed! Reserved Range! Try Another IP... ",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         } else {
           setIpInfo(response.data);
         }
@@ -87,7 +84,7 @@ function Home() {
           </button>
         </form>
       </div>
-      {ipInfo &&  (
+      {ipInfo && (
         <>
           <div className="result-container" style={{ marginBottom: "-92px" }}>
             <div className="result-container-child">
@@ -169,19 +166,7 @@ function Home() {
           </div>
         </>
       )}
-      {loading ? (
-        <Backdrop
-          sx={{
-            color: "#ffffff",
-            zIndex: (theme) => theme.zIndex.drawer + 1,
-          }}
-          open
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      ) : (
-        ""
-      )}
+      {loading && <LoadingSpinner />}
     </div>
   );
 }
